@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/javier/MPLABXProjects/ProyectoM&amp;M/ProyectoFinal.X/eeprom.c</file>
-            <file>file:/home/javier/MPLABXProjects/ProyectoM&amp;M/ProyectoFinal.X/process.h</file>
             <file>file:/home/javier/MPLABXProjects/ProyectoM&amp;M/ProyectoFinal.X/main.c</file>
-            <file>file:/home/javier/MPLABXProjects/ProyectoM&amp;M/ProyectoFinal.X/eeprom.h</file>
-            <file>file:/home/javier/MPLABXProjects/ProyectoM&amp;M/ProyectoFinal.X/lcd.h</file>
+            <file>file:/home/javier/MPLABXProjects/ProyectoM&amp;M/ProyectoFinal.X/process.c</file>
+            <file>file:/home/javier/MPLABXProjects/ProyectoM&amp;M/ProyectoFinal.X/ByteConf.h</file>
         </group>
     </open-files>
 </project-private>
