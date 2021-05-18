@@ -1,3 +1,3 @@
 # M-M-Proyecto20
 Proyecto
-![Simulatión Proteus](.Img/6.PNG)
+![Simulatión Proteus](186480939_1119766008507507_5111966289149467769_n.png)
