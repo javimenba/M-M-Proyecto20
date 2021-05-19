@@ -11,7 +11,6 @@
 #include "ByteConf.h"
 #include "process.h"
 #include "adc.h"
-#include "lcd.h"
 #include "eeprom.h"
 #include <stdio.h>
 #include <string.h>
@@ -24,36 +23,38 @@
 int delay,flag,eprom;
 
 
-void __interrupt() INT_EX_0(void){
-    char data[10],temp[10];    
-    int digital,i,k,j=0;;  
+// 0.05v-0.12 =1's
+// 0.13v-0.17 =2's
+// 1.- Inicializa en 0
+// 2.- Presiona INT0, configuras, vuelves a presionar RB0, se sale de la interrupcion
+//     corre el programa.
+// 3.- Vuelve a presionar la interrupción, crea reset.
+
+// Cilo for i=13; presiona INT, le da un valor a Delay.
+// 
+
+void __interrupt() INT_EX_0(void){   
+    int digital,i,k,j=0;  
     float voltage;
     j=j+1;
     if(INTCONbits.INT0IF==1){
         // código 
         flag=flag+1; 
     do{ 
-        if(flag==2){  Lcd_Cmd(LCD_CLEAR);eeprom_guardar(0,2);eprom=eeprom_leer(0x00);}
+        if(flag==2){eeprom_guardar(0,2);eprom=eeprom_leer(0x00);}
         i=0;
+        LATBbits.LATB2=1;
         delay=0;
         PORTA=0;
         PORTB=0;
-        digital=ADC_Read(5);
-        voltage= digital*((float)vref/(float)1023);       
-        sprintf(data,"%.2f",voltage);
-        strcat(data,"V");	/*Concatenate result and unit to print*/
-        Lcd_Out2(1,0,"Voltaje: ");
-        Lcd_Out2(1,11,data);/*Send string data for printing*/  
-        Lcd_Out(2,0,"Tiempo('s): ");   
-        delay = (voltage/5)*100;
-        sprintf(temp,"%i",delay);
-        //strcat(temp,"s");
-         Lcd_Out2(2,11,temp);
+        digital=ADC_Read(5);//0-vdd
+        voltage= digital*((float)vref/(float)1023); //0-5v      
         __delay_ms(100);
         if(eprom==2){asm("reset");}        
         else if(PORTBbits.RB0==1){
         __delay_ms(500);
         i=1;
+        LATBbits.LATB2=0;
         INTCONbits.INT0IF=0;
         }
      }while(i==0);
@@ -83,17 +84,13 @@ void main(void) {
     
     declet();
     ADC_Init();			/*Initialize 10-bit ADC*/
-    Lcd_Init();
-    Lcd_Cmd(LCD_CLEAR);
-    Lcd_Cmd(LCD_CURSOR_OFF);
     eeprom_guardar(0,0);
     eprom=eeprom_leer(0x00);
+    
     while(1){
         if(flag==1){Dutty_Pwm(1000,delay);}    
         else if(flag==0){Dutty_Pwm(1000,0);}
 
-   
-   
 }
 }
 

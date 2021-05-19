@@ -1,4 +1,4 @@
-# 1 "main.c"
+# 1 "lcd.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,7 +6,7 @@
 # 1 "<built-in>" 2
 # 1 "/opt/microchip/xc8/v2.10/pic/include/language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "main.c" 2
+# 1 "lcd.c" 2
 
 
 
@@ -15,6 +15,8 @@
 
 
 
+# 1 "./lcd.h" 1
+# 64 "./lcd.h"
 # 1 "/opt/microchip/xc8/v2.10/pic/include/xc.h" 1 3
 # 18 "/opt/microchip/xc8/v2.10/pic/include/xc.h" 3
 extern const char __xc8_OPTIM_SPEED;
@@ -8008,386 +8010,138 @@ extern __attribute__((nonreentrant)) void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 # 33 "/opt/microchip/xc8/v2.10/pic/include/xc.h" 2 3
-# 10 "main.c" 2
-# 1 "./PWM.h" 1
-
-
-
-
-
-
-void PWM_generar( unsigned int duty, unsigned int fpwm);
-# 11 "main.c" 2
-# 1 "./ByteConf.h" 1
-
-
-
-
-
-#pragma config PLLSEL = PLL4X
-#pragma config CFGPLLEN = OFF
-#pragma config CPUDIV = NOCLKDIV
-#pragma config LS48MHZ = SYS24X4
-
-
-#pragma config FOSC = INTOSCIO
-#pragma config PCLKEN = OFF
-#pragma config FCMEN = OFF
-#pragma config IESO = OFF
-
-
-#pragma config nPWRTEN = ON
-#pragma config BOREN = SBORDIS
-#pragma config BORV = 190
-#pragma config nLPBOR = OFF
-
-
-#pragma config WDTEN = OFF
-#pragma config WDTPS = 32768
-
-
-#pragma config CCP2MX = RC1
-#pragma config PBADEN = ON
-#pragma config T3CMX = RC0
-#pragma config SDOMX = RB3
-#pragma config MCLRE = ON
-
-
-
-#pragma config STVREN = ON
-#pragma config LVP = OFF
-#pragma config ICPRT = OFF
-#pragma config XINST = OFF
-
-
-#pragma config CP0 = OFF
-#pragma config CP1 = OFF
-#pragma config CP2 = OFF
-#pragma config CP3 = OFF
-
-
-#pragma config CPB = OFF
-#pragma config CPD = OFF
-
-
-#pragma config WRT0 = OFF
-#pragma config WRT1 = OFF
-#pragma config WRT2 = OFF
-#pragma config WRT3 = OFF
-
-
-#pragma config WRTC = OFF
-#pragma config WRTB = OFF
-#pragma config WRTD = OFF
-
-
-#pragma config EBTR0 = OFF
-#pragma config EBTR1 = OFF
-#pragma config EBTR2 = OFF
-#pragma config EBTR3 = OFF
-
-
-#pragma config EBTRB = OFF
-# 12 "main.c" 2
-# 1 "./process.h" 1
-
-
-
-
-
-
-void mostrar_inc(unsigned int duty);
-void mostrar_dec(unsigned int duty);
-void segment(unsigned int centenas);
-void segment2(unsigned int centenas);
-void declet(void);
-void delay_ms(unsigned int milliseconds);
-void Dutty_Pwm(unsigned int fpwm, unsigned int delay);
-void demo_delay_ms(unsigned int miliseconds);
-void demo_Dutty_Pwm(unsigned int fpwm, unsigned int delay);
-# 13 "main.c" 2
-# 1 "./adc.h" 1
-
-
-
-
-
-
-void ADC_Init();
-int ADC_Read(int);
-# 14 "main.c" 2
-# 1 "./eeprom.h" 1
-
-
-
-
-# 1 "/opt/microchip/xc8/v2.10/pic/include/c99/stdio.h" 1 3
-# 24 "/opt/microchip/xc8/v2.10/pic/include/c99/stdio.h" 3
-# 1 "/opt/microchip/xc8/v2.10/pic/include/c99/bits/alltypes.h" 1 3
-
-
-
-
-
-typedef void * va_list[1];
-
-
-
-
-typedef void * __isoc_va_list[1];
-# 137 "/opt/microchip/xc8/v2.10/pic/include/c99/bits/alltypes.h" 3
-typedef long ssize_t;
-# 246 "/opt/microchip/xc8/v2.10/pic/include/c99/bits/alltypes.h" 3
-typedef long long off_t;
-# 399 "/opt/microchip/xc8/v2.10/pic/include/c99/bits/alltypes.h" 3
-typedef struct _IO_FILE FILE;
-# 25 "/opt/microchip/xc8/v2.10/pic/include/c99/stdio.h" 2 3
-# 52 "/opt/microchip/xc8/v2.10/pic/include/c99/stdio.h" 3
-typedef union _G_fpos64_t {
- char __opaque[16];
- double __align;
-} fpos_t;
-
-extern FILE *const stdin;
-extern FILE *const stdout;
-extern FILE *const stderr;
-
-
-
-
-
-FILE *fopen(const char *restrict, const char *restrict);
-FILE *freopen(const char *restrict, const char *restrict, FILE *restrict);
-int fclose(FILE *);
-
-int remove(const char *);
-int rename(const char *, const char *);
-
-int feof(FILE *);
-int ferror(FILE *);
-int fflush(FILE *);
-void clearerr(FILE *);
-
-int fseek(FILE *, long, int);
-long ftell(FILE *);
-void rewind(FILE *);
-
-int fgetpos(FILE *restrict, fpos_t *restrict);
-int fsetpos(FILE *, const fpos_t *);
-
-size_t fread(void *restrict, size_t, size_t, FILE *restrict);
-size_t fwrite(const void *restrict, size_t, size_t, FILE *restrict);
-
-int fgetc(FILE *);
-int getc(FILE *);
-int getchar(void);
-int ungetc(int, FILE *);
-
-int fputc(int, FILE *);
-int putc(int, FILE *);
-int putchar(int);
-
-char *fgets(char *restrict, int, FILE *restrict);
-
-char *gets(char *);
-
-
-int fputs(const char *restrict, FILE *restrict);
-int puts(const char *);
-
-#pragma printf_check(printf) const
-#pragma printf_check(vprintf) const
-#pragma printf_check(sprintf) const
-#pragma printf_check(snprintf) const
-#pragma printf_check(vsprintf) const
-#pragma printf_check(vsnprintf) const
-
-int printf(const char *restrict, ...);
-int fprintf(FILE *restrict, const char *restrict, ...);
-int sprintf(char *restrict, const char *restrict, ...);
-int snprintf(char *restrict, size_t, const char *restrict, ...);
-
-int vprintf(const char *restrict, __isoc_va_list);
-int vfprintf(FILE *restrict, const char *restrict, __isoc_va_list);
-int vsprintf(char *restrict, const char *restrict, __isoc_va_list);
-int vsnprintf(char *restrict, size_t, const char *restrict, __isoc_va_list);
-
-int scanf(const char *restrict, ...);
-int fscanf(FILE *restrict, const char *restrict, ...);
-int sscanf(const char *restrict, const char *restrict, ...);
-int vscanf(const char *restrict, __isoc_va_list);
-int vfscanf(FILE *restrict, const char *restrict, __isoc_va_list);
-int vsscanf(const char *restrict, const char *restrict, __isoc_va_list);
-
-void perror(const char *);
-
-int setvbuf(FILE *restrict, char *restrict, int, size_t);
-void setbuf(FILE *restrict, char *restrict);
-
-char *tmpnam(char *);
-FILE *tmpfile(void);
-
-
-
-
-FILE *fmemopen(void *restrict, size_t, const char *restrict);
-FILE *open_memstream(char **, size_t *);
-FILE *fdopen(int, const char *);
-FILE *popen(const char *, const char *);
-int pclose(FILE *);
-int fileno(FILE *);
-int fseeko(FILE *, off_t, int);
-off_t ftello(FILE *);
-int dprintf(int, const char *restrict, ...);
-int vdprintf(int, const char *restrict, __isoc_va_list);
-void flockfile(FILE *);
-int ftrylockfile(FILE *);
-void funlockfile(FILE *);
-int getc_unlocked(FILE *);
-int getchar_unlocked(void);
-int putc_unlocked(int, FILE *);
-int putchar_unlocked(int);
-ssize_t getdelim(char **restrict, size_t *restrict, int, FILE *restrict);
-ssize_t getline(char **restrict, size_t *restrict, FILE *restrict);
-int renameat(int, const char *, int, const char *);
-char *ctermid(char *);
-
-
-
-
-
-
-
-char *tempnam(const char *, const char *);
-# 6 "./eeprom.h" 2
-# 1 "/opt/microchip/xc8/v2.10/pic/include/c99/string.h" 1 3
-# 25 "/opt/microchip/xc8/v2.10/pic/include/c99/string.h" 3
-# 1 "/opt/microchip/xc8/v2.10/pic/include/c99/bits/alltypes.h" 1 3
-# 411 "/opt/microchip/xc8/v2.10/pic/include/c99/bits/alltypes.h" 3
-typedef struct __locale_struct * locale_t;
-# 26 "/opt/microchip/xc8/v2.10/pic/include/c99/string.h" 2 3
-
-void *memcpy (void *restrict, const void *restrict, size_t);
-void *memmove (void *, const void *, size_t);
-void *memset (void *, int, size_t);
-int memcmp (const void *, const void *, size_t);
-void *memchr (const void *, int, size_t);
-
-char *strcpy (char *restrict, const char *restrict);
-char *strncpy (char *restrict, const char *restrict, size_t);
-
-char *strcat (char *restrict, const char *restrict);
-char *strncat (char *restrict, const char *restrict, size_t);
-
-int strcmp (const char *, const char *);
-int strncmp (const char *, const char *, size_t);
-
-int strcoll (const char *, const char *);
-size_t strxfrm (char *restrict, const char *restrict, size_t);
-
-char *strchr (const char *, int);
-char *strrchr (const char *, int);
-
-size_t strcspn (const char *, const char *);
-size_t strspn (const char *, const char *);
-char *strpbrk (const char *, const char *);
-char *strstr (const char *, const char *);
-char *strtok (char *restrict, const char *restrict);
-
-size_t strlen (const char *);
-
-char *strerror (int);
-# 65 "/opt/microchip/xc8/v2.10/pic/include/c99/string.h" 3
-char *strtok_r (char *restrict, const char *restrict, char **restrict);
-int strerror_r (int, char *, size_t);
-char *stpcpy(char *restrict, const char *restrict);
-char *stpncpy(char *restrict, const char *restrict, size_t);
-size_t strnlen (const char *, size_t);
-char *strdup (const char *);
-char *strndup (const char *, size_t);
-char *strsignal(int);
-char *strerror_l (int, locale_t);
-int strcoll_l (const char *, const char *, locale_t);
-size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
-
-
-
-
-void *memccpy (void *restrict, const void *restrict, int, size_t);
-# 7 "./eeprom.h" 2
-
-
-void eeprom_guardar(int DIR, char DATE);
-char eeprom_leer(int DIR);
-void eeprom_guardar_cadena(int dir, char *date);
-# 15 "main.c" 2
-
-
-
-
-
-
-
-
-int delay,flag,eprom;
-# 36 "main.c"
-void __attribute__((picinterrupt(("")))) INT_EX_0(void){
-    int digital,i,k,j=0;
-    float voltage;
-    j=j+1;
-    if(INTCONbits.INT0IF==1){
-
-        flag=flag+1;
-    do{
-        if(flag==2){eeprom_guardar(0,2);eprom=eeprom_leer(0x00);}
-        i=0;
-        LATBbits.LATB2=1;
-        delay=0;
-        PORTA=0;
-        PORTB=0;
-        digital=ADC_Read(5);
-        voltage= digital*((float)5.00/(float)1023);
-        _delay((unsigned long)((100)*(4000000/4000.0)));
-        if(eprom==2){__asm("reset");}
-        else if(PORTBbits.RB0==1){
-        _delay((unsigned long)((500)*(4000000/4000.0)));
-        i=1;
-        LATBbits.LATB2=0;
-        INTCONbits.INT0IF=0;
-        }
-     }while(i==0);
-
-    }
-
-    }
-
-void __attribute__((picinterrupt(("low_priority")))) INT_EXT_1(void){
-
-    if(INTCON3bits.INT1IF==1){
-
-        INTCON3bits.INT1IF=0;
-    }
+# 65 "./lcd.h" 2
+void Lcd_Init(void);
+void Lcd_Out(unsigned char y, unsigned char x, const char *buffer);
+void Lcd_Out2(unsigned char y, unsigned char x, char *buffer);
+void Lcd_Chr_CP(char data);
+void Lcd_Cmd(unsigned char data);
+void lcd_goto(int x, int y);
+# 10 "lcd.c" 2
+
+
+void Lcd_Init(void){
+unsigned char data;
+ANSELD=0;
+TRISDbits.TRISD7 = 0;
+TRISDbits.TRISD6 = 0;
+TRISDbits.TRISD5 = 0;
+TRISDbits.TRISD4 = 0;
+TRISDbits.TRISD3 = 0;
+TRISDbits.TRISD1 = 0;
+TRISDbits.TRISD2 = 0;
+PORTDbits.RD7 = 0;
+PORTDbits.RD6 = 0;
+PORTDbits.RD5 = 0;
+PORTDbits.RD4 = 0;
+PORTDbits.RD3 = 0;
+PORTDbits.RD1 = 0;
+PORTDbits.RD2 = 0;
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+for(data = 1; data < 4; data ++)
+{
+    PORTDbits.RD7 = 0; PORTDbits.RD6 = 0; PORTDbits.RD5 = 1; PORTDbits.RD4 = 1; PORTDbits.RD3 = 0;
+    PORTDbits.RD1 = 0; PORTDbits.RD7 = 0; PORTDbits.RD6 = 0; PORTDbits.RD5 = 1; PORTDbits.RD4 = 1;
+    PORTDbits.RD3 = 1; PORTDbits.RD1 = 0;
+    _delay((unsigned long)((5)*(4000000/4000000.0)));
+    PORTDbits.RD7 = 0; PORTDbits.RD6 = 0; PORTDbits.RD5 = 1; PORTDbits.RD4 = 1; PORTDbits.RD3 = 0;
+    PORTDbits.RD1 = 0;
+    _delay((unsigned long)((5500)*(4000000/4000000.0)));
+}
+PORTDbits.RD7 = 0; PORTDbits.RD6 = 0; PORTDbits.RD5 = 1; PORTDbits.RD4 = 0; PORTDbits.RD3 = 0; PORTDbits.RD1 = 0;
+PORTDbits.RD7 = 0; PORTDbits.RD6 = 0; PORTDbits.RD5 = 1; PORTDbits.RD4 = 0; PORTDbits.RD3 = 1; PORTDbits.RD1 = 0;
+_delay((unsigned long)((5)*(4000000/4000000.0)));
+PORTDbits.RD7 = 0; PORTDbits.RD6 = 0; PORTDbits.RD5 = 1; PORTDbits.RD4 = 0; PORTDbits.RD3 = 0; PORTDbits.RD1 = 0;
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+data = 40; Lcd_Cmd(data);
+data = 16; Lcd_Cmd(data);
+data = 1; Lcd_Cmd(data);
+data = 15; Lcd_Cmd(data);
 }
 
-void main(void) {
-    int i,m;
-    INTCONbits.INT0IE=1;
-    INTCON3bits.INT1IE=1;
-    INTCON2bits.INTEDG0=0;
-    INTCON2bits.INTEDG1=0;
-    RCONbits.IPEN=1;
-    INTCONbits.GIEH=1;
-    INTCONbits.GIEL=1;
 
-
-    declet();
-    ADC_Init();
-    eeprom_guardar(0,0);
-    eprom=eeprom_leer(0x00);
-
-    while(1){
-        if(flag==1){Dutty_Pwm(1000,delay);}
-        else if(flag==0){Dutty_Pwm(1000,0);}
-
+void Lcd_Out(unsigned char y, unsigned char x, const char *buffer)
+{
+unsigned char data;
+switch (y)
+{
+    case 1: data = 128 + x; break;
+    case 2: data = 192 + x; break;
+    case 3: data = 148 + x; break;
+    case 4: data = 212 + x; break;
+    default: break;
 }
+Lcd_Cmd(data);
+while(*buffer)
+{
+    Lcd_Chr_CP(*buffer);
+    buffer++;
+}
+return;
+}
+
+
+void Lcd_Out2(unsigned char y, unsigned char x, char *buffer)
+{
+unsigned char data;
+switch (y)
+{
+    case 1: data = 128 + x; break;
+    case 2: data = 192 + x; break;
+    case 3: data = 148 + x; break;
+    case 4: data = 212 + x; break;
+    default: break;
+}
+Lcd_Cmd(data);
+while(*buffer)
+{
+    Lcd_Chr_CP(*buffer);
+    buffer++;
+}
+return;
+}
+
+
+void Lcd_Chr_CP(char data){
+PORTDbits.RD3 = 0; PORTDbits.RD1 = 1;
+PORTDbits.RD7 = (data & 0b10000000)>>7; PORTDbits.RD6 = (data & 0b01000000)>>6;
+PORTDbits.RD5 = (data & 0b00100000)>>5; PORTDbits.RD4 = (data & 0b00010000)>>4;
+_delay((unsigned long)((10)*(4000000/4000000.0)));
+PORTDbits.RD3 = 1; _delay((unsigned long)((5)*(4000000/4000000.0))); PORTDbits.RD3 = 0;
+PORTDbits.RD7 = (data & 0b00001000)>>3; PORTDbits.RD6 = (data & 0b00000100)>>2;
+PORTDbits.RD5 = (data & 0b00000010)>>1; PORTDbits.RD4 = (data & 0b00000001);
+_delay((unsigned long)((10)*(4000000/4000000.0)));
+PORTDbits.RD3 = 1; _delay((unsigned long)((5)*(4000000/4000000.0))); PORTDbits.RD3 = 0;
+_delay((unsigned long)((5)*(4000000/4000000.0))); _delay((unsigned long)((5500)*(4000000/4000000.0)));
+}
+
+
+void Lcd_Cmd(unsigned char data){
+PORTDbits.RD3 = 0; PORTDbits.RD1 = 0;
+PORTDbits.RD7 = (data & 0b10000000)>>7; PORTDbits.RD6 = (data & 0b01000000)>>6;
+PORTDbits.RD5 = (data & 0b00100000)>>5; PORTDbits.RD4 = (data & 0b00010000)>>4;
+_delay((unsigned long)((10)*(4000000/4000000.0)));
+PORTDbits.RD3 = 1; _delay((unsigned long)((5)*(4000000/4000000.0))); PORTDbits.RD3 = 0;
+PORTDbits.RD7 = (data & 0b00001000)>>3; PORTDbits.RD6 = (data & 0b00000100)>>2;
+PORTDbits.RD5 = (data & 0b00000010)>>1; PORTDbits.RD4 = (data & 0b00000001);
+_delay((unsigned long)((10)*(4000000/4000000.0)));;
+PORTDbits.RD3 = 1; _delay((unsigned long)((5)*(4000000/4000000.0))); PORTDbits.RD3 = 0;
+_delay((unsigned long)((5500)*(4000000/4000000.0)));
+}
+
+void lcd_goto(int x, int y) {
+    unsigned char data;
+    switch (y) {
+    case 1: data = 128 + x; break;
+    case 2: data = 192 + x; break;
+    case 3: data = 148 + x; break;
+    case 4: data = 212 + x; break;
+    default: break;
+    }
+    Lcd_Cmd(data);
 }

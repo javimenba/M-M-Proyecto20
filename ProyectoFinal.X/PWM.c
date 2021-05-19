@@ -20,7 +20,7 @@ void PWM_generar( unsigned int duty, unsigned int fpwm){
     unsigned long PR2cal=_XTAL_FREQ;
     PR2cal=PR2cal/fpwm;
     PR2cal=PR2cal/4;  
-    T2CON=0b00000000;
+    T2CON=0b00000000; 
     while(PR2cal>256){
        prescalador=prescalador*4;
        T2CON++;

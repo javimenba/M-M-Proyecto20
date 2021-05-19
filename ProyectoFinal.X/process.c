@@ -10,8 +10,8 @@
 int CEN=1,CEN2=11;
    void mostrar_inc(unsigned int duty){
         int por_pwm, par;
-        por_pwm=duty/5;
-        par = por_pwm%2;
+        por_pwm=duty/5; 
+        par = por_pwm%2; 
         if(par==1){
             PORTB=0xF0;
         }
@@ -25,7 +25,7 @@ int CEN=1,CEN2=11;
 
     void mostrar_dec(unsigned int duty){
         int por_pwm, par;
-        por_pwm=duty/5;
+        por_pwm=duty/5; 
         par = por_pwm%2;
         
         if(por_pwm==20 && par==0){

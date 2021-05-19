@@ -4,5 +4,4 @@ PWM.h  \
 ByteConf.h  \
 process.h  \
 adc.h  \
-lcd.h  \
 eeprom.h 

@@ -7,14 +7,7 @@
 # 1 "/opt/microchip/xc8/v2.10/pic/include/language_support.h" 1 3
 # 2 "<built-in>" 2
 # 1 "adc.c" 2
-
-
-
-
-
-
-
-
+# 10 "adc.c"
 # 1 "./adc.h" 1
 
 
@@ -8017,7 +8010,7 @@ extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 
 void ADC_Init();
 int ADC_Read(int);
-# 10 "adc.c" 2
+# 11 "adc.c" 2
 void ADC_Init()
 {
     ADCON1 = 0x0e;
@@ -8028,6 +8021,7 @@ void ADC_Init()
 
 int ADC_Read(int channel)
 {
+
     int digital;
     ADCON0 =(ADCON0 & 0b11000011)|((channel<<2) & 0b00111100);
 
