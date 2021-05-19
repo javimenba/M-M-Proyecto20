@@ -8,10 +8,11 @@
 #include "process.h"
 
 int CEN=1,CEN2=11;
-   void mostrar_inc(unsigned int duty){
-        int por_pwm, par;
-        por_pwm=duty/5; 
-        par = por_pwm%2; 
+   void mostrar_inc(unsigned int duty){ // 0 5 10 15 20 25 ....
+                                         // 0 1  0  1
+        int por_pwm, par; 
+        por_pwm=duty/5;  // 55/5=11
+        par = por_pwm%2; // 11%2=1
         if(par==1){
             PORTB=0xF0;
         }
@@ -25,13 +26,13 @@ int CEN=1,CEN2=11;
 
     void mostrar_dec(unsigned int duty){
         int por_pwm, par;
-        por_pwm=duty/5; 
-        par = por_pwm%2;
+        por_pwm=duty/5;  // 100/5 = 20 // 1 0 1 0 1 0
+        par = por_pwm%2; // 20%2 =  0  // 100 
         
         if(por_pwm==20 && par==0){
-            PORTA=0x7E;
-            PORTB=0xF8; 
-            PWM_generar(100,1000);   
+            PORTA=0x7E; // 0
+            PORTB=0xF8; // 1
+            PWM_generar(100,1000); //   
                
         }
         else if(por_pwm!=20 && par==1 ){
@@ -75,11 +76,11 @@ void segment(unsigned int centenas){
     }
     else if(centenas==10){
         PORTA=0x73;
-        CEN2=10;
+        CEN2=10;    
     }
 
 }
-void segment2(unsigned int centenas){
+void segment2(unsigned int centenas){ 
     if(centenas==1){
         PORTA=0x30;
         CEN=1;
@@ -143,56 +144,56 @@ void delay_s(unsigned int seconds)
  }
 
 
-void Dutty_Pwm(unsigned int fpwm, unsigned int delay)
-{
-        int i, k=0;  
-        
-       
-        for(i=0; i<20 ; i++){
-          
-            PWM_generar(k,fpwm);
-            delay_s(delay);
-            k=k+5;
-            mostrar_inc(k);
-        }
-        k=105;
-        PORTA=0;
-        for(i=0; i<21 ; i++){
-           
-            k=k-5;
-            PWM_generar(k,fpwm);   
-            delay_s(delay);
-            mostrar_dec(k);
-        }
-        k=0;
-        PORTA=0;
- } 
-
 //void Dutty_Pwm(unsigned int fpwm, unsigned int delay)
 //{
-//
-//    int con=0,i,k;
-//    do{
-//     i=0;
-//     PWM_generar(con,fpwm);
-//     delay_s(delay);
-//     con=con+5;
-//     mostrar_inc(con);
-//     if(con==100){
-//         PORTA=0;
-//         con=100;
-//         do{            
-//            k=0;
-//            con=con-5;
-//            PWM_generar(con,fpwm);   
+//        int i, k=0;  
+//        
+//       
+//        for(i=0; i<20 ; i++){
+//          
+//            PWM_generar(k,fpwm);
 //            delay_s(delay);
-//            mostrar_dec(con);
-//            if(con==0){i=1; k=1;}
-//         }while(k==0);
-//     }
-//    }while(i==0);
-//    PORTA=0;    
+//            k=k+5;
+//            mostrar_inc(k);
+//        }
+//        k=105;
+//        PORTA=0;
+//        for(i=0; i<21 ; i++){
+//           
+//            k=k-5;
+//            PWM_generar(k,fpwm);   
+//            delay_s(delay);
+//            mostrar_dec(k);
+//        }
+//        k=0;
+//        PORTA=0;
 // } 
+
+void Dutty_Pwm(unsigned int fpwm, unsigned int delay)
+{
+
+    int con=0,i,k;
+    do{
+     i=0;
+     PWM_generar(con,fpwm);//PWM_generar(con,fpwm) //55% 60% ... 100%
+     delay_s(delay);
+     con=con+5;
+     mostrar_inc(con);
+     if(con==100){
+         PORTA=0; // 7segmentos CC 95
+         con=100;
+         do{            
+            k=0;
+            con=con-5;
+            PWM_generar(con,fpwm);   
+            delay_s(delay);
+            mostrar_dec(con);
+            if(con==0){i=1; k=1;}
+         }while(k==0);
+     }
+    }while(i==0);
+    PORTA=0;    
+ } 
 
 
 void demo_delay_ms(unsigned int miliseconds)

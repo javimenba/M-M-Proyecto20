@@ -12,7 +12,7 @@ void ADC_Init()
 {    
     ADCON1 = 0x0e;  		/*Ref vtg is VDD & Configure pin as analog pin*/    
     ADCON2 = 0x92;  		/*Right Justified, 4Tad and Fosc/32. */
-    ADRESH=0;  			    /*Flush ADC output Register*/
+    ADRESH=0;  			    /*Flush ADC output Register*/ 
     ADRESL=0;  
 }
 

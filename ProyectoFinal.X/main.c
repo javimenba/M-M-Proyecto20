@@ -19,19 +19,25 @@
 #define XTAL_FREQ 4000000
 #define vref 5.00	
 #define button1 PORTCbits.RC2
+
+
+
 // Proteus 400ms = 1's
 int delay,flag,eprom;
 
 
-// 0.05v-0.12 =1's
-// 0.13v-0.17 =2's
-// 1.- Inicializa en 0
-// 2.- Presiona INT0, configuras, vuelves a presionar RB0, se sale de la interrupcion
-//     corre el programa.
-// 3.- Vuelve a presionar la interrupción, crea reset.
+/* 0.05v-0.12 =1's
+   0.13v-0.17 =2's
+   5V =100
+*/
 
-// Cilo for i=13; presiona INT, le da un valor a Delay.
-// 
+/* 1.- Inicializa en 0
+   2.- Presiona INT0(RB0), configuras, vuelves a presionar RB0, se sale de la interrupcion
+        corre el programa.
+   3.- Vuelve a presionar la interrupción, crea reset.
+
+   Cilo for i=13; presiona INT, le da un valor a Delay.
+*/ 
 
 void __interrupt() INT_EX_0(void){   
     int digital,i,k,j=0;  
@@ -48,9 +54,10 @@ void __interrupt() INT_EX_0(void){
         PORTA=0;
         PORTB=0;
         digital=ADC_Read(5);//0-vdd
-        voltage= digital*((float)vref/(float)1023); //0-5v      
+        voltage= digital*((float)vref/(float)1023); //1.4v  
+        delay = (voltage/5)*100;// Por cada 0.05v es igual a un 1's 
         __delay_ms(100);
-        if(eprom==2){asm("reset");}        
+        if(eprom==2){asm("reset");}//reset por software;}    
         else if(PORTBbits.RB0==1){
         __delay_ms(500);
         i=1;
@@ -73,6 +80,9 @@ void __interrupt(low_priority) INT_EXT_1(void){
 
 void main(void) {
     int i,m;
+    /* Activar interrupciones globales y activamos interr
+       Alta prioridad y baja prioridad
+     */
     INTCONbits.INT0IE=1;
     INTCON3bits.INT1IE=1;
     INTCON2bits.INTEDG0=0;
@@ -84,11 +94,11 @@ void main(void) {
     
     declet();
     ADC_Init();			/*Initialize 10-bit ADC*/
-    eeprom_guardar(0,0);
-    eprom=eeprom_leer(0x00);
+    eeprom_guardar(0,0); // 0 guardamos un 0
+    eprom=eeprom_leer(0x00); 
     
     while(1){
-        if(flag==1){Dutty_Pwm(1000,delay);}    
+        if(flag==1){Dutty_Pwm(1000,delay);}    // delay=99's; delay=1's;
         else if(flag==0){Dutty_Pwm(1000,0);}
 
 }

@@ -5,6 +5,7 @@
  * Created on 27 de marzo de 2019, 01:38 PM
  */
 
+// T2CON
 
 #include "PWM.h"
 void PWM_generar( unsigned int duty, unsigned int fpwm){
